@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Movies | ManjuReddy Films</title>
+
+    <style>
+
+        /* ================= BASIC RESET ================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0b0b14;
+            color: white;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: linear-gradient(
+                135deg,
+                #090979,
+                #3b0764,
+                #e11d48
+            );
+
+            padding: 18px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo span {
+            color: #ffd700;
+        }
+
+        /* ================= NAVIGATION ================= */
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #ffd700;
+        }
+
+        /* ================= PAGE HEADER ================= */
+
+        .page-header {
+            text-align: center;
+
+            padding: 70px 20px 50px;
+
+            background:
+                linear-gradient(
+                    rgba(5,5,20,0.7),
+                    rgba(5,5,20,0.9)
+                ),
+                linear-gradient(
+                    135deg,
+                    #160b35,
+                    #35006b,
+                    #831843
+                );
+        }
+
+        .page-header h1 {
+            font-size: 45px;
+
+            margin-bottom: 15px;
+
+            background: linear-gradient(
+                90deg,
+                #ffd700,
+                #ff4ecd,
+                #55d6ff
+            );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            color: #ccc;
+            font-size: 17px;
+        }
+
+        /* ================= MOVIE SECTION ================= */
+
+        .movies-section {
+            padding: 60px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-title h2 {
+            font-size: 32px;
+
+            background: linear-gradient(
+                90deg,
+                #ff4ecd,
+                #ffd700,
+                #55d6ff
+            );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title p {
+            color: #aaa;
+            margin-top: 10px;
+        }
+
+        /* ================= MOVIE GRID ================= */
+
+        .movies-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(auto-fit, minmax(260px, 1fr));
+
+            gap: 30px;
+        }
+
+        /* ================= MOVIE CARD ================= */
+
+        .movie-card {
+            background: #171725;
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            border: 1px solid #29293d;
+
+            transition: 0.3s;
+
+            box-shadow:
+                0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .movie-card:hover {
+            transform: translateY(-8px);
+
+            border-color: #ff4ecd;
+
+            box-shadow:
+                0 10px 30px
+                rgba(255,78,205,0.25);
+        }
+
+        /* ================= IMAGE SPACE ================= */
+
+        .poster {
+            width: 100%;
+            height: 330px;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #312e81,
+                    #be185d
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .poster img {
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+            transition: 0.4s;
+        }
+
+        .movie-card:hover .poster img {
+            transform: scale(1.05);
+        }
+
+        /* ================= MOVIE INFO ================= */
+
+        .movie-info {
+            padding: 22px;
+        }
+
+        .movie-info h2 {
+            font-size: 24px;
+            margin-bottom: 12px;
+        }
+
+        .movie-info p {
+            color: #aaa;
+            margin: 8px 0;
+            font-size: 15px;
+        }
+
+        .rating {
+            color: #ffd700 !important;
+            font-weight: bold;
+        }
+
+        /* ================= BOOK BUTTON ================= */
+
+        .book-btn {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 11px 24px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ff006e,
+                    #7c3aed
+                );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            transition: 0.3s;
+        }
+
+        .book-btn:hover {
+            transform: scale(1.05);
+
+            box-shadow:
+                0 5px 20px
+                rgba(255,0,110,0.4);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background:
+                linear-gradient(
+                    135deg,
+                    #090979,
+                    #3b0764,
+                    #e11d48
+                );
+
+            padding: 35px 7%;
+
+            text-align: center;
+
+            margin-top: 30px;
+        }
+
+        footer h2 {
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: #ddd;
+            margin: 8px;
+        }
+
+        .footer-links {
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            color: white;
+
+            text-decoration: none;
+
+            margin: 0 10px;
+
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #ffd700;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                gap: 12px;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            .page-header h1 {
+                font-size: 35px;
+            }
+
+            .movies-section {
+                padding: 45px 5%;
+            }
+
+            .poster {
+                height: 300px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            🎬 ManjuReddy <span>Films</span>
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="movies.html" class="active">
+                Movies
+            </a>
+
+            <a href="theatre.html">
+                Theatre
+            </a>
+
+            <a href="showtime.html">
+                Show Time
+            </a>
+
+            <a href="seats.html">
+                Seats
+            </a>
+
+            <a href="payment.html">
+                Payment
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================= PAGE HEADER ================= -->
+
+    <section class="page-header">
+
+        <h1>
+            🎬 Available Movies
+        </h1>
+
+        <p>
+            Choose your favorite movie and book your tickets now
+        </p>
+
+    </section>
+
+
+    <!-- ================= MOVIES ================= -->
+
+    <section class="movies-section">
+
+        <div class="section-title">
+
+            <h2>
+                Now Showing
+            </h2>
+
+            <p>
+                Select a movie to continue with your booking
+            </p>
+
+        </div>
+
+
+        <div class="movies-grid">
+
+
+            <!-- ================= MOVIE 1 ================= -->
+
+            <div class="movie-card">
+
+                <div class="poster">
+
+                    <img
+                        src="nani-jersey.jpg"
+                        alt="Jersey Movie"
+                    >
+
+                </div>
+
+                <div class="movie-info">
+
+                    <h2>
+                        Jersey
+                    </h2>
+
+                    <p>
+                        🌐 Language: Telugu
+                    </p>
+
+                    <p>
+                        🎭 Genre: Sports / Drama
+                    </p>
+
+                    <p class="rating">
+                        ⭐ Rating: 8.5/10
+                    </p>
+
+                    <p>
+                        ⏱️ Duration: 2h 40m
+                    </p>
+
+                    <a
+                        href="showtime.html"
+                        class="book-btn"
+                    >
+                        🎟️ Book Now
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= MOVIE 2 ================= -->
+
+            <div class="movie-card">
+
+                <div class="poster">
+
+                    <img
+                        src="12 th fail.jpg"
+                        alt="12th Fail Movie"
+                    >
+
+                </div>
+
+                <div class="movie-info">
+
+                    <h2>
+                        12th Fail
+                    </h2>
+
+                    <p>
+                        🌐 Language: Hindi
+                    </p>
+
+                    <p>
+                        🎭 Genre: Drama / Inspirational
+                    </p>
+
+                    <p class="rating">
+                        ⭐ Rating: 9.0/10
+                    </p>
+
+                    <p>
+                        ⏱️ Duration: 2h 27m
+                    </p>
+
+                    <a
+                        href="showtime.html"
+                        class="book-btn"
+                    >
+                        🎟️ Book Now
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= MOVIE 3 ================= -->
+
+            <div class="movie-card">
+
+                <div class="poster">
+
+                    <img
+                        src="wednesday.jpg"
+                        alt="wednesdayMovie"
+                    >
+
+                </div>
+
+                <div class="movie-info">
+
+                    <h2>
+                        wednesday
+                    </h2>
+
+                    <p>
+                        🌐 Language: Telugu
+                    </p>
+
+                    <p>
+                        🎭 Genre: Action / Drama
+                    </p>
+
+                    <p class="rating">
+                        ⭐ Rating: 9.1/10
+                    </p>
+
+                    <p>
+                        ⏱️ Duration: 3h 7m
+                    </p>
+
+                    <a
+                        href="showtime.html"
+                        class="book-btn"
+                    >
+                        🎟️ Book Now
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= MOVIE 4 ================= -->
+
+            <div class="movie-card">
+
+                <div class="poster">
+
+                    <img
+                        src="sita ramam.avif"
+                        alt="Sita ramam Movie"
+                    >
+
+                </div>
+
+                <div class="movie-info">
+
+                    <h2>
+                        sita ramam
+                    </h2>
+
+                    <p>
+                        🌐 Language: Telugu
+                    </p>
+
+                    <p>
+                        🎭 Genre: Romance / Comedy
+                    </p>
+
+                    <p class="rating">
+                        ⭐ Rating: 8.2/10
+                    </p>
+
+                    <p>
+                        ⏱️ Duration: 2h 34m
+                    </p>
+
+                    <a
+                        href="showtime.html"
+                        class="book-btn"
+                    >
+                        🎟️ Book Now
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <h2>
+            🎬 ManjuReddy Films
+        </h2>
+
+        <p>
+            Your one-stop destination for movie ticket booking.
+        </p>
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="movies.html">
+                Movies
+            </a>
+
+            <a href="theatre.html">
+                Theatre
+            </a>
+
+            <a href="showtime.html">
+                Show Time
+            </a>
+
+            <a href="seats.html">
+                Seats
+            </a>
+
+            <a href="payment.html">
+                Payment
+            </a>
+
+        </div>
+
+        <p>
+            © 2026 ManjuReddy Films. All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+</body>
+
+</html>

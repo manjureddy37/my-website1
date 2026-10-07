@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - ManjuReddy Films</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0b0b14;
+            color: white;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(135deg, #090979, #3b0764, #e11d48);
+            padding: 18px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #ffd700;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #ffd700;
+        }
+
+        /* PAGE HEADER */
+        .page-header {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #160b35, #35006b, #831843);
+        }
+
+        .page-header h1 {
+            font-size: 45px;
+            color: #ffd700;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: #ccc;
+        }
+
+        /* MAIN */
+        .payment-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 30px;
+        }
+
+        .booking-summary,
+        .payment-box {
+            background: #171725;
+            border: 1px solid #29293d;
+            border-radius: 18px;
+            padding: 30px;
+        }
+
+        .booking-summary {
+            height: fit-content;
+        }
+
+        .booking-summary h2 {
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            padding: 14px 0;
+            border-bottom: 1px solid #29293d;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .summary-item span:first-child {
+            color: #aaa;
+        }
+
+        .summary-item span:last-child {
+            font-weight: bold;
+            text-align: right;
+        }
+
+        .total {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #ff4ecd;
+            display: flex;
+            justify-content: space-between;
+            font-size: 22px;
+        }
+
+        .total span:last-child {
+            color: #ff4ecd;
+            font-weight: bold;
+        }
+
+        /* PAYMENT BOX */
+        .payment-box h2 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 25px;
+        }
+
+        /* METHODS */
+        .methods {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .method {
+            padding: 15px 5px;
+            background: #0f0f1b;
+            border: 1px solid #444;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .method.active {
+            background: linear-gradient(135deg, #7c3aed, #e11d48);
+            border-color: #ff4ecd;
+        }
+
+        .method-icon {
+            display: block;
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        /* FORM */
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 13px;
+            border-radius: 8px;
+            border: 1px solid #444;
+            background: #0f0f1b;
+            color: white;
+            outline: none;
+        }
+
+        .card-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* PAYMENT DETAILS */
+        .payment-details {
+            display: none;
+        }
+
+        .payment-details.active {
+            display: block;
+        }
+
+        .upi-box {
+            text-align: center;
+            padding: 20px;
+            background: #0f0f1b;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .upi-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        /* BUTTON */
+        .pay-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(90deg, #ff006e, #7c3aed);
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .pay-btn:hover {
+            opacity: 0.9;
+        }
+
+        .secure {
+            text-align: center;
+            color: #999;
+            font-size: 13px;
+            margin-top: 15px;
+        }
+
+        /* SUCCESS */
+        .success {
+            display: none;
+            text-align: center;
+            padding: 30px 10px;
+        }
+
+        .success-icon {
+            font-size: 65px;
+        }
+
+        .success h2 {
+            color: #55d6ff;
+            margin: 15px 0;
+        }
+
+        .success p {
+            color: #ccc;
+            line-height: 1.8;
+        }
+
+        .booking-id {
+            margin: 20px 0;
+            padding: 15px;
+            background: #0f0f1b;
+            border-radius: 10px;
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        /* FOOTER */
+        footer {
+            background: linear-gradient(135deg, #090979, #3b0764, #e11d48);
+            padding: 35px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        footer p {
+            color: #ddd;
+            margin: 8px;
+        }
+
+        .footer-links {
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                justify-content: center;
+            }
+
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header>
+
+    <div class="logo">
+        🎬 ManjuReddy <span>Films</span>
+    </div>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="movies.html">Movies</a>
+        <a href="theatre.html">Theatre</a>
+        <a href="showtime.html">Show Time</a>
+        <a href="seats.html">Seats</a>
+        <a href="payment.html" class="active">Payment</a>
+    </nav>
+
+</header>
+
+
+<!-- PAGE TITLE -->
+<section class="page-header">
+
+    <h1>💳 Secure Payment</h1>
+
+    <p>
+        Complete your payment and confirm your movie ticket
+    </p>
+
+</section>
+
+
+<!-- PAYMENT AREA -->
+<div class="payment-container">
+
+
+    <!-- BOOKING SUMMARY -->
+    <div class="booking-summary">
+
+        <h2>🎟️ Booking Summary</h2>
+
+        <div class="summary-item">
+            <span>Movie</span>
+            <span>Jersey</span>
+        </div>
+
+        <div class="summary-item">
+            <span>Theatre</span>
+            <span>ManjuReddy Cinemas</span>
+        </div>
+
+        <div class="summary-item">
+            <span>Date</span>
+            <span>13 August 2026</span>
+        </div>
+
+        <div class="summary-item">
+            <span>Show Time</span>
+            <span>06:30 PM</span>
+        </div>
+
+        <div class="summary-item">
+            <span>Seats</span>
+            <span>A1, A2</span>
+        </div>
+
+        <div class="summary-item">
+            <span>Tickets</span>
+            <span>2</span>
+        </div>
+
+        <div class="summary-item">
+            <span>Ticket Price</span>
+            <span>₹300</span>
+        </div>
+
+        <div class="summary-item">
+            <span>Convenience Fee</span>
+            <span>₹30</span>
+        </div>
+
+        <div class="total">
+            <span>Total</span>
+            <span>₹330</span>
+        </div>
+
+    </div>
+
+
+    <!-- PAYMENT BOX -->
+    <div class="payment-box">
+
+        <h2 id="paymentTitle">
+            Choose Payment Method
+        </h2>
+
+
+        <!-- PAYMENT METHODS -->
+        <div class="methods">
+
+            <div class="method active"
+                 onclick="showPayment('upi', this)">
+
+                <span class="method-icon">📱</span>
+                UPI
+
+            </div>
+
+            <div class="method"
+                 onclick="showPayment('card', this)">
+
+                <span class="method-icon">💳</span>
+                Card
+
+            </div>
+
+            <div class="method"
+                 onclick="showPayment('bank', this)">
+
+                <span class="method-icon">🏦</span>
+                Bank
+
+            </div>
+
+        </div>
+
+
+        <!-- UPI -->
+        <div id="upi" class="payment-details active">
+
+            <div class="upi-box">
+
+                <div class="upi-icon">📱</div>
+
+                <p>
+                    Enter your UPI ID to continue.
+                </p>
+
+            </div>
+
+            <div class="form-group">
+
+                <label>UPI ID</label>
+
+                <input
+                    type="text"
+                    id="upiId"
+                    placeholder="example@upi">
+
+            </div>
+
+        </div>
+
+
+        <!-- CARD -->
+        <div id="card" class="payment-details">
+
+            <div class="form-group">
+
+                <label>Card Holder Name</label>
+
+                <input
+                    type="text"
+                    id="cardName"
+                    placeholder="Enter card holder name">
+
+            </div>
+
+            <div class="form-group">
+
+                <label>Card Number</label>
+
+                <input
+                    type="text"
+                    id="cardNumber"
+                    placeholder="1234 5678 9012 3456">
+
+            </div>
+
+            <div class="card-row">
+
+                <div class="form-group">
+
+                    <label>Expiry Date</label>
+
+                    <input
+                        type="text"
+                        id="expiry"
+                        placeholder="MM/YY">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>CVV</label>
+
+                    <input
+                        type="password"
+                        id="cvv"
+                        placeholder="CVV"
+                        maxlength="3">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- BANK -->
+        <div id="bank" class="payment-details">
+
+            <div class="form-group">
+
+                <label>Select Bank</label>
+
+                <select id="bankName">
+
+                    <option value="">
+                        -- Select Bank --
+                    </option>
+
+                    <option>State Bank of India</option>
+                    <option>HDFC Bank</option>
+                    <option>ICICI Bank</option>
+                    <option>Axis Bank</option>
+                    <option>Kotak Mahindra Bank</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAY BUTTON -->
+        <button
+            type="button"
+            class="pay-btn"
+            onclick="makePayment()">
+
+            🔒 Pay ₹330
+
+        </button>
+
+        <p class="secure">
+            🔒 Demo payment for your project
+        </p>
+
+
+        <!-- SUCCESS -->
+        <div id="success" class="success">
+
+            <div class="success-icon">
+                🎉
+            </div>
+
+            <h2>
+                Payment Successful!
+            </h2>
+
+            <p>
+                Your movie ticket has been successfully booked.
+            </p>
+
+            <div class="booking-id" id="bookingId">
+                Booking ID: MR2026-00125
+            </div>
+
+            <p>
+                🎬 Movie: Jersey<br>
+                🏢 Theatre: ManjuReddy Cinemas<br>
+                💺 Seats: A1, A2<br>
+                📅 Date: 13 August 2026<br>
+                ⏰ Time: 06:30 PM<br>
+                💰 Amount Paid: ₹330
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- FOOTER -->
+<footer>
+
+    <h2>🎬 ManjuReddy Films</h2>
+
+    <p>
+        Your one-stop destination for movie ticket booking.
+    </p>
+
+    <div class="footer-links">
+
+        <a href="index.html">Home</a>
+        <a href="movies.html">Movies</a>
+        <a href="theatre.html">Theatre</a>
+        <a href="showtime.html">Show Time</a>
+        <a href="seats.html">Seats</a>
+        <a href="payment.html">Payment</a>
+
+    </div>
+
+    <p>
+        © 2026 ManjuReddy Films. All Rights Reserved.
+    </p>
+
+</footer>
+
+
+<script>
+
+/* ================= PAYMENT METHOD ================= */
+
+function showPayment(type, element) {
+
+    // Remove active from all buttons
+    var methods = document.querySelectorAll(".method");
+
+    methods.forEach(function(method) {
+        method.classList.remove("active");
+    });
+
+    // Add active to selected button
+    element.classList.add("active");
+
+    // Hide all payment sections
+    var details = document.querySelectorAll(".payment-details");
+
+    details.forEach(function(detail) {
+        detail.classList.remove("active");
+    });
+
+    // Show selected payment section
+    document.getElementById(type).classList.add("active");
+}
+
+
+/* ================= MAKE PAYMENT ================= */
+
+function makePayment() {
+
+    var activeMethod =
+        document.querySelector(".method.active");
+
+    if (!activeMethod) {
+        alert("Please select a payment method.");
+        return;
+    }
+
+    var method =
+        activeMethod.textContent.trim();
+
+
+    /* ================= UPI ================= */
+
+    if (method.includes("UPI")) {
+
+        var upi =
+            document.getElementById("upiId").value.trim();
+
+        if (upi === "") {
+
+            alert("Please enter your UPI ID.");
+
+            return;
+        }
+
+        if (!upi.includes("@")) {
+
+            alert("Please enter a valid UPI ID.");
+
+            return;
+        }
+    }
+
+
+    /* ================= CARD ================= */
+
+    if (method.includes("Card")) {
+
+        var cardName =
+            document.getElementById("cardName").value.trim();
+
+        var cardNumber =
+            document.getElementById("cardNumber").value.trim();
+
+        var expiry =
+            document.getElementById("expiry").value.trim();
+
+        var cvv =
+            document.getElementById("cvv").value.trim();
+
+
+        if (cardName === "") {
+
+            alert("Please enter card holder name.");
+
+            return;
+        }
+
+
+        if (cardNumber === "") {
+
+            alert("Please enter card number.");
+
+            return;
+        }
+
+
+        if (cardNumber.replace(/\s/g, "").length < 12) {
+
+            alert("Please enter a valid card number.");
+
+            return;
+        }
+
+
+        if (expiry === "") {
+
+            alert("Please enter expiry date.");
+
+            return;
+        }
+
+
+        if (cvv.length !== 3) {
+
+            alert("Please enter a valid CVV.");
+
+            return;
+        }
+    }
+
+
+    /* ================= BANK ================= */
+
+    if (method.includes("Bank")) {
+
+        var bank =
+            document.getElementById("bankName").value;
+
+        if (bank === "") {
+
+            alert("Please select your bank.");
+
+            return;
+        }
+    }
+
+
+    /* ================= SUCCESS ================= */
+
+    // Hide payment methods
+    document.querySelector(".methods").style.display = "none";
+
+    // Hide payment forms
+    document.querySelectorAll(".payment-details").forEach(
+        function(detail) {
+            detail.style.display = "none";
+        }
+    );
+
+    // Hide Pay button
+    document.querySelector(".pay-btn").style.display = "none";
+
+    // Hide secure text
+    document.querySelector(".secure").style.display = "none";
+
+    // Change heading
+    document.getElementById("paymentTitle").innerHTML =
+        "✅ Payment Successful";
+
+    // Show success message
+    document.getElementById("success").style.display = "block";
+
+    // Generate booking ID
+    var bookingId =
+        "MR2026-" +
+        Math.floor(10000 + Math.random() * 90000);
+
+    document.getElementById("bookingId").innerHTML =
+        "Booking ID: " + bookingId;
+
+    // Alert
+    alert(
+        "🎉 Payment Successful!\n\n" +
+        "Your movie ticket has been booked successfully."
+    );
+}
+
+</script>
+
+</body>
+</html>

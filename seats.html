@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Select Seats | ManjuReddy Films</title>
+
+    <style>
+
+        /* ================= BASIC RESET ================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0b0b14;
+            color: white;
+        }
+
+        /* ================= HEADER ================= */
+
+        header {
+            background: linear-gradient(
+                135deg,
+                #090979,
+                #3b0764,
+                #e11d48
+            );
+
+            padding: 18px 7%;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #ffd700;
+        }
+
+        nav {
+            display: flex;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #ffd700;
+        }
+
+        /* ================= PAGE HEADER ================= */
+
+        .page-header {
+            text-align: center;
+
+            padding: 60px 20px 45px;
+
+            background:
+                linear-gradient(
+                    rgba(5,5,20,0.7),
+                    rgba(5,5,20,0.9)
+                ),
+                linear-gradient(
+                    135deg,
+                    #160b35,
+                    #35006b,
+                    #831843
+                );
+        }
+
+        .page-header h1 {
+            font-size: 45px;
+
+            background: linear-gradient(
+                90deg,
+                #ffd700,
+                #ff4ecd,
+                #55d6ff
+            );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            color: #ccc;
+            font-size: 17px;
+        }
+
+        /* ================= BOOKING INFO ================= */
+
+        .booking-info {
+            max-width: 900px;
+
+            margin: 40px auto 20px;
+
+            padding: 25px;
+
+            background: #171725;
+
+            border: 1px solid #29293d;
+
+            border-radius: 15px;
+
+            text-align: center;
+        }
+
+        .booking-info h2 {
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+
+        .booking-details {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .booking-details span {
+            color: #ccc;
+        }
+
+        /* ================= SEAT SECTION ================= */
+
+        .seat-section {
+            max-width: 900px;
+
+            margin: 25px auto 60px;
+
+            padding: 35px;
+
+            background: #171725;
+
+            border: 1px solid #29293d;
+
+            border-radius: 18px;
+
+            box-shadow: 0 5px 25px rgba(0,0,0,0.3);
+        }
+
+        /* ================= SCREEN ================= */
+
+        .screen {
+            width: 75%;
+
+            height: 45px;
+
+            margin: 0 auto 45px;
+
+            background: linear-gradient(
+                90deg,
+                #55d6ff,
+                white,
+                #55d6ff
+            );
+
+            color: #111;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            font-weight: bold;
+
+            border-radius: 50% 50% 10px 10px;
+
+            box-shadow:
+                0 5px 25px
+                rgba(85,214,255,0.4);
+        }
+
+        /* ================= SEAT ROW ================= */
+
+        .seat-row {
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 9px;
+
+            margin: 12px 0;
+        }
+
+        .row-name {
+            width: 25px;
+
+            color: #aaa;
+
+            font-weight: bold;
+        }
+
+        /* ================= SEAT ================= */
+
+        .seat {
+            width: 38px;
+            height: 38px;
+
+            border-radius: 8px 8px 5px 5px;
+
+            background: #29293d;
+
+            border: 1px solid #555;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 12px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .seat:hover {
+            transform: scale(1.08);
+
+            border-color: #55d6ff;
+        }
+
+        /* Selected */
+
+        .seat.selected {
+            background: linear-gradient(
+                135deg,
+                #ff006e,
+                #7c3aed
+            );
+
+            border-color: #ff4ecd;
+
+            box-shadow:
+                0 3px 12px
+                rgba(255,0,110,0.4);
+        }
+
+        /* Occupied */
+
+        .seat.occupied {
+            background: #555;
+
+            border-color: #666;
+
+            color: #999;
+
+            cursor: not-allowed;
+
+            opacity: 0.6;
+        }
+
+        /* ================= LEGEND ================= */
+
+        .legend {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 25px;
+
+            flex-wrap: wrap;
+
+            margin: 35px 0 25px;
+        }
+
+        .legend-item {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            color: #ccc;
+
+            font-size: 14px;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+
+            border-radius: 5px;
+
+            background: #29293d;
+
+            border: 1px solid #555;
+        }
+
+        .legend-box.selected {
+            background: linear-gradient(
+                135deg,
+                #ff006e,
+                #7c3aed
+            );
+        }
+
+        .legend-box.occupied {
+            background: #555;
+        }
+
+        /* ================= SUMMARY ================= */
+
+        .summary {
+            margin-top: 30px;
+
+            padding: 25px;
+
+            background: #0f0f1b;
+
+            border-radius: 15px;
+
+            border: 1px solid #29293d;
+
+            text-align: center;
+        }
+
+        .summary h2 {
+            margin-bottom: 15px;
+
+            color: #ffd700;
+        }
+
+        .summary p {
+            margin: 10px;
+
+            color: #ccc;
+
+            font-size: 16px;
+        }
+
+        #selectedSeats {
+            color: #55d6ff;
+
+            font-weight: bold;
+        }
+
+        #total {
+            color: #ff4ecd;
+
+            font-size: 22px;
+
+            font-weight: bold;
+        }
+
+        /* ================= BUTTON ================= */
+
+        .payment-btn {
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 13px 30px;
+
+            border-radius: 25px;
+
+            background: linear-gradient(
+                90deg,
+                #ff006e,
+                #7c3aed
+            );
+
+            color: white;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            border: none;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+            font-size: 15px;
+        }
+
+        .payment-btn:hover {
+            transform: scale(1.05);
+
+            box-shadow:
+                0 5px 20px
+                rgba(255,0,110,0.4);
+        }
+
+        /* ================= FOOTER ================= */
+
+        footer {
+            background: linear-gradient(
+                135deg,
+                #090979,
+                #3b0764,
+                #e11d48
+            );
+
+            padding: 35px 7%;
+
+            text-align: center;
+        }
+
+        footer h2 {
+            margin-bottom: 10px;
+        }
+
+        footer p {
+            color: #ddd;
+
+            margin: 8px;
+        }
+
+        .footer-links {
+            margin: 15px 0;
+        }
+
+        .footer-links a {
+            color: white;
+
+            text-decoration: none;
+
+            margin: 0 10px;
+        }
+
+        .footer-links a:hover {
+            color: #ffd700;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 768px) {
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav a {
+                font-size: 14px;
+            }
+
+            .page-header h1 {
+                font-size: 35px;
+            }
+
+            .seat-section {
+                margin: 25px 5% 50px;
+
+                padding: 20px 10px;
+
+                overflow-x: auto;
+            }
+
+            .seat {
+                width: 30px;
+                height: 30px;
+
+                font-size: 9px;
+            }
+
+            .seat-row {
+                gap: 5px;
+            }
+
+            .screen {
+                width: 90%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header>
+
+        <div class="logo">
+            🎬 ManjuReddy <span>Films</span>
+        </div>
+
+        <nav>
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="movies.html">
+                Movies
+            </a>
+
+            <a href="theatre.html">
+                Theatre
+            </a>
+
+            <a href="showtime.html">
+                Show Time
+            </a>
+
+            <a href="seats.html" class="active">
+                Seats
+            </a>
+
+            <a href="payment.html">
+                Payment
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- ================= PAGE HEADER ================= -->
+
+    <section class="page-header">
+
+        <h1>💺 Select Your Seats</h1>
+
+        <p>
+            Choose your preferred seats and continue to payment
+        </p>
+
+    </section>
+
+
+    <!-- ================= BOOKING INFO ================= -->
+
+    <div class="booking-info">
+
+        <h2>🎬 Booking Details</h2>
+
+        <div class="booking-details">
+
+            <span>
+                🎥 Movie: <b>Jersey</b>
+            </span>
+
+            <span>
+                🏢 Theatre: <b>ManjuReddy Cinemas</b>
+            </span>
+
+            <span>
+                ⏰ Time: <b>06:30 PM</b>
+            </span>
+
+            <span>
+                📅 Date: <b>13 August 2026</b>
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= SEAT SECTION ================= -->
+
+    <section class="seat-section">
+
+
+        <!-- SCREEN -->
+
+        <div class="screen">
+            SCREEN
+        </div>
+
+
+        <!-- ================= SEATS ================= -->
+
+        <div class="seats-container">
+
+
+            <!-- ROW A -->
+
+            <div class="seat-row">
+
+                <span class="row-name">A</span>
+
+                <div class="seat" data-seat="A1">A1</div>
+                <div class="seat" data-seat="A2">A2</div>
+                <div class="seat" data-seat="A3">A3</div>
+                <div class="seat" data-seat="A4">A4</div>
+                <div class="seat" data-seat="A5">A5</div>
+
+                <div style="width:20px;"></div>
+
+                <div class="seat" data-seat="A6">A6</div>
+                <div class="seat" data-seat="A7">A7</div>
+                <div class="seat" data-seat="A8">A8</div>
+                <div class="seat" data-seat="A9">A9</div>
+                <div class="seat" data-seat="A10">A10</div>
+
+            </div>
+
+
+            <!-- ROW B -->
+
+            <div class="seat-row">
+
+                <span class="row-name">B</span>
+
+                <div class="seat" data-seat="B1">B1</div>
+                <div class="seat occupied">B2</div>
+                <div class="seat" data-seat="B3">B3</div>
+                <div class="seat" data-seat="B4">B4</div>
+                <div class="seat" data-seat="B5">B5</div>
+
+                <div style="width:20px;"></div>
+
+                <div class="seat" data-seat="B6">B6</div>
+                <div class="seat" data-seat="B7">B7</div>
+                <div class="seat occupied">B8</div>
+                <div class="seat" data-seat="B9">B9</div>
+                <div class="seat" data-seat="B10">B10</div>
+
+            </div>
+
+
+            <!-- ROW C -->
+
+            <div class="seat-row">
+
+                <span class="row-name">C</span>
+
+                <div class="seat" data-seat="C1">C1</div>
+                <div class="seat" data-seat="C2">C2</div>
+                <div class="seat" data-seat="C3">C3</div>
+                <div class="seat occupied">C4</div>
+                <div class="seat" data-seat="C5">C5</div>
+
+                <div style="width:20px;"></div>
+
+                <div class="seat" data-seat="C6">C6</div>
+                <div class="seat" data-seat="C7">C7</div>
+                <div class="seat" data-seat="C8">C8</div>
+                <div class="seat" data-seat="C9">C9</div>
+                <div class="seat" data-seat="C10">C10</div>
+
+            </div>
+
+
+            <!-- ROW D -->
+
+            <div class="seat-row">
+
+                <span class="row-name">D</span>
+
+                <div class="seat" data-seat="D1">D1</div>
+                <div class="seat" data-seat="D2">D2</div>
+                <div class="seat" data-seat="D3">D3</div>
+                <div class="seat" data-seat="D4">D4</div>
+                <div class="seat" data-seat="D5">D5</div>
+
+                <div style="width:20px;"></div>
+
+                <div class="seat occupied">D6</div>
+                <div class="seat" data-seat="D7">D7</div>
+                <div class="seat" data-seat="D8">D8</div>
+                <div class="seat" data-seat="D9">D9</div>
+                <div class="seat" data-seat="D10">D10</div>
+
+            </div>
+
+
+            <!-- ROW E -->
+
+            <div class="seat-row">
+
+                <span class="row-name">E</span>
+
+                <div class="seat" data-seat="E1">E1</div>
+                <div class="seat" data-seat="E2">E2</div>
+                <div class="seat occupied">E3</div>
+                <div class="seat" data-seat="E4">E4</div>
+                <div class="seat" data-seat="E5">E5</div>
+
+                <div style="width:20px;"></div>
+
+                <div class="seat" data-seat="E6">E6</div>
+                <div class="seat" data-seat="E7">E7</div>
+                <div class="seat" data-seat="E8">E8</div>
+                <div class="seat" data-seat="E9">E9</div>
+                <div class="seat" data-seat="E10">E10</div>
+
+            </div>
+
+
+            <!-- ROW F -->
+
+            <div class="seat-row">
+
+                <span class="row-name">F</span>
+
+                <div class="seat" data-seat="F1">F1</div>
+                <div class="seat" data-seat="F2">F2</div>
+                <div class="seat" data-seat="F3">F3</div>
+                <div class="seat" data-seat="F4">F4</div>
+                <div class="seat" data-seat="F5">F5</div>
+
+                <div style="width:20px;"></div>
+
+                <div class="seat" data-seat="F6">F6</div>
+                <div class="seat" data-seat="F7">F7</div>
+                <div class="seat occupied">F8</div>
+                <div class="seat" data-seat="F9">F9</div>
+                <div class="seat" data-seat="F10">F10</div>
+
+            </div>
+
+
+        </div>
+
+
+        <!-- ================= LEGEND ================= -->
+
+        <div class="legend">
+
+            <div class="legend-item">
+
+                <div class="legend-box"></div>
+
+                Available
+
+            </div>
+
+
+            <div class="legend-item">
+
+                <div class="legend-box selected"></div>
+
+                Selected
+
+            </div>
+
+
+            <div class="legend-item">
+
+                <div class="legend-box occupied"></div>
+
+                Occupied
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= SUMMARY ================= -->
+
+        <div class="summary">
+
+            <h2>🎟️ Booking Summary</h2>
+
+            <p>
+                Selected Seats:
+                <span id="selectedSeats">None</span>
+            </p>
+
+            <p>
+                Number of Seats:
+                <span id="seatCount">0</span>
+            </p>
+
+            <p>
+                Price per Seat:
+                ₹150
+            </p>
+
+            <p>
+                Total Amount:
+                <span id="total">₹0</span>
+            </p>
+
+            <a
+                href="payment.html"
+                class="payment-btn"
+                id="paymentBtn"
+                onclick="return validateSeats()"
+            >
+                💳 Proceed to Payment
+            </a>
+
+        </div>
+
+
+    </section>
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer>
+
+        <h2>🎬 ManjuReddy Films</h2>
+
+        <p>
+            Your one-stop destination for movie ticket booking.
+        </p>
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="movies.html">
+                Movies
+            </a>
+
+            <a href="theatre.html">
+                Theatre
+            </a>
+
+            <a href="showtime.html">
+                Show Time
+            </a>
+
+            <a href="seats.html">
+                Seats
+            </a>
+
+            <a href="payment.html">
+                Payment
+            </a>
+
+        </div>
+
+        <p>
+            © 2026 ManjuReddy Films. All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        const seats = document.querySelectorAll(".seat:not(.occupied)");
+
+        const selectedSeatsText =
+            document.getElementById("selectedSeats");
+
+        const seatCount =
+            document.getElementById("seatCount");
+
+        const total =
+            document.getElementById("total");
+
+        const pricePerSeat = 150;
+
+
+        seats.forEach(function(seat) {
+
+            seat.addEventListener("click", function() {
+
+                seat.classList.toggle("selected");
+
+                updateBooking();
+
+            });
+
+        });
+
+
+        function updateBooking() {
+
+            const selected =
+                document.querySelectorAll(".seat.selected");
+
+            let seatNames = [];
+
+            selected.forEach(function(seat) {
+
+                seatNames.push(
+                    seat.getAttribute("data-seat")
+                );
+
+            });
+
+
+            if (seatNames.length === 0) {
+
+                selectedSeatsText.textContent = "None";
+
+            } else {
+
+                selectedSeatsText.textContent =
+                    seatNames.join(", ");
+
+            }
+
+
+            seatCount.textContent =
+                seatNames.length;
+
+
+            const totalAmount =
+                seatNames.length * pricePerSeat;
+
+
+            total.textContent =
+                "₹" + totalAmount;
+
+        }
+
+
+        function validateSeats() {
+
+            const selected =
+                document.querySelectorAll(".seat.selected");
+
+            if (selected.length === 0) {
+
+                alert(
+                    "Please select at least one seat before proceeding to payment."
+                );
+
+                return false;
+
+            }
+
+            return true;
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
